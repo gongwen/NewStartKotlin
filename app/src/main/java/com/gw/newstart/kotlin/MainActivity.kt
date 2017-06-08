@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.gw.newstart.kotlin.model.UserEntity
 import com.gw.newstart.kotlin.net.WebObserver
 import com.gw.newstart.kotlin.net.WebServiceManager
-import com.gw.newstart.kotlin.rxhelper.SchedulersCompat
+import com.gw.newstart.kotlin.rxhelper.applyIoSchedulers
 import com.orhanobut.logger.Logger
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
@@ -17,7 +17,7 @@ class MainActivity : RxAppCompatActivity() {
         val apiGetService = WebServiceManager.getApiGetService()
         apiGetService.getDataFromNetwork()
                 .compose(bindToLifecycle())
-                .compose(SchedulersCompat.applyIoSchedulers())
+                .applyIoSchedulers()
                 .subscribe(object : WebObserver<UserEntity>(this) {
                     override fun onSuccess(data: UserEntity) {
                         Logger.i("get--->" + data.toString())
@@ -26,7 +26,7 @@ class MainActivity : RxAppCompatActivity() {
         val apiPostService = WebServiceManager.getApiPostService()
         apiPostService.getDataFromNetwork("用户名", "密码")
                 .compose(bindToLifecycle())
-                .compose(SchedulersCompat.applyIoSchedulers())
+                .applyIoSchedulers()
                 .subscribe(object : WebObserver<UserEntity>(this) {
                     override fun onSuccess(data: UserEntity) {
                         Logger.i("post--->" + data.toString())

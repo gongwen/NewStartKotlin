@@ -27,12 +27,12 @@ object WebServiceManager {
     }
 
     private fun <T> getWebService(clazz: Class<T>): T {
-        var mWebService = mWebServiceMap[clazz] as T;
+        var mWebService = mWebServiceMap[clazz];
         if (mWebService == null) {
             mWebService = getRetrofit().create(clazz)
             mWebServiceMap[clazz] = mWebService as Any
         }
-        return mWebService
+        return mWebService as T
     }
 
     fun getApiGetService() = getWebService(ApiGetService::class.java)

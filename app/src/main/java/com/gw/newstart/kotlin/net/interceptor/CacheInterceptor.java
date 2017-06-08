@@ -1,13 +1,13 @@
 package com.gw.newstart.kotlin.net.interceptor;
 
-import com.gw.newstart.kotlin.utils.AppUtils;
-
 import java.io.IOException;
 
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import static com.gw.newstart.kotlin.utils.AppUtilsKt.isNetworkAvailable;
 
 /**
  * Created by GongWen on 17/5/25.
@@ -19,7 +19,7 @@ public class CacheInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        if (!AppUtils.isNetworkAvailable()) {
+        if (!isNetworkAvailable()) {
             request = request
                     .newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
@@ -31,7 +31,7 @@ public class CacheInterceptor implements Interceptor {
                     .build();
         }
         Response response = chain.proceed(request);
-        if (AppUtils.isNetworkAvailable()) {
+        if (isNetworkAvailable()) {
             int maxAge = 0;
             // 有网络时 设置缓存超时时间0个小时
             response.newBuilder()
